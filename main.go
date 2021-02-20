@@ -129,3 +129,39 @@ func delete(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "/", 301)
 
 }
+
+func insert(w http.ResponseWriter, r *http.Request) {
+	db := dbConn()
+
+	if r.Method == "POST" {
+		name := r.FormValue("name")
+		description := r.FormValue("description")
+
+		insform, err := db.Prepare("INSERT INTO posts (name, description) VALUES(?,?)")
+		errorCheck(err)
+
+		insform.Exec(name, description)
+		log.Println("Resource Added" + name + " " + description)
+	}
+
+	defer db.Close()
+	http.Redirect(w, r, "/", 301)
+}
+
+func update(w http.ResponseWriter, r *http.Request) {
+	db := dbConn()
+
+	if r.Method == "POST" {
+		name := r.FormValue("name")
+		description := r.FormValue("description")
+		id := r.FormValue("uid")
+
+		stmt, err := db.Prepare("UPDATE posts SET name=?, description=? WHERE id=?")
+		errorCheck(err)
+
+		stmt.Exec(name, description, id)
+		log.Println("Resource updated !")
+	}
+	defer db.Close()
+	http.Redirect(w, r, "/", 301)
+}
