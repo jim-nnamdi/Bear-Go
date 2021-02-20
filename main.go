@@ -84,3 +84,7 @@ func show(w http.ResponseWriter, r *http.Request) {
 		defer db.Close()
 	}
 }
+
+func new(w http.ResponseWriter, r *http.Request) {
+	tmpl.ExecuteTemplate(w, "New", nil)
+}
