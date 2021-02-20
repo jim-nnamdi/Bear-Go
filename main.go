@@ -88,3 +88,28 @@ func show(w http.ResponseWriter, r *http.Request) {
 func new(w http.ResponseWriter, r *http.Request) {
 	tmpl.ExecuteTemplate(w, "New", nil)
 }
+
+func edit(w http.ResponseWriter, r *http.Request) {
+	db := dbConn()
+
+	postID := r.URL.Query().Get("ID")
+	result, err := db.Query("SELECT * FROM posts WHERE id=?", postID)
+	errorCheck(err)
+
+	pst := Post{}
+	for result.Next() {
+		var ID int
+		var Name string
+		var Description string
+
+		err := result.Scan(&ID, &Name, &Description)
+		errorCheck(err)
+
+		pst.ID = ID
+		pst.Name = Name
+		pst.Description = Description
+	}
+
+	tmpl.ExecuteTemplate(w, "Edit", pst)
+	defer db.Close()
+}
