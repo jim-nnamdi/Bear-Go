@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"log"
 	"net/http"
 	"text/template"
 
@@ -112,4 +113,19 @@ func edit(w http.ResponseWriter, r *http.Request) {
 
 	tmpl.ExecuteTemplate(w, "Edit", pst)
 	defer db.Close()
+}
+
+func delete(w http.ResponseWriter, r *http.Request) {
+	db := dbConn()
+
+	postID := r.URL.Query().Get("ID")
+	stmt, err := db.Prepare("DELETE * FROM posts WHERE id=?")
+	errorCheck(err)
+
+	stmt.Exec(postID)
+
+	log.Println("Resource deleted")
+	defer db.Close()
+	http.Redirect(w, r, "/", 301)
+
 }
