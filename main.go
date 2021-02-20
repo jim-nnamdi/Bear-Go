@@ -165,3 +165,15 @@ func update(w http.ResponseWriter, r *http.Request) {
 	defer db.Close()
 	http.Redirect(w, r, "/", 301)
 }
+
+func main() {
+	log.Println("server started")
+	http.HandleFunc("/", index)
+	http.HandleFunc("/show", show)
+	http.HandleFunc("/new", new)
+	http.HandleFunc("/edit", edit)
+	http.HandleFunc("/insert", insert)
+	http.HandleFunc("/update", update)
+	http.HandleFunc("/delete", delete)
+	http.ListenAndServe(":8080", nil)
+}
