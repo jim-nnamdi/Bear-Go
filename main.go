@@ -117,7 +117,7 @@ func delete(w http.ResponseWriter, r *http.Request) {
 	db := dbConn()
 
 	postID := r.URL.Query().Get("id")
-	stmt, err := db.Prepare("DELETE FROM post WHERE id=?")
+	stmt, err := db.Prepare("DELETE FROM Post WHERE id=?")
 	errorCheck(err)
 
 	stmt.Exec(postID)
@@ -172,5 +172,8 @@ func main() {
 	http.HandleFunc("/insert", insert)
 	http.HandleFunc("/update", update)
 	http.HandleFunc("/delete", delete)
+
+	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
+
 	http.ListenAndServe(":8080", nil)
 }
