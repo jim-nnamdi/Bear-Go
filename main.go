@@ -177,3 +177,5 @@ func main() {
 
 	http.ListenAndServe(":8080", nil)
 }
+
+//reflex -r '\.go' -s -- sh -c "go run main.go"
