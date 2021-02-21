@@ -142,7 +142,7 @@ func insert(w http.ResponseWriter, r *http.Request) {
 		insform, err := db.Prepare("INSERT INTO post (name, description, createdAt) VALUES(?,?,?)")
 		errorCheck(err)
 
-		insform.Exec(name, description, time.Now())
+		insform.Exec(name, description, time.Now().Format("2006-01-02"))
 		log.Println("Resource Added" + name + " " + description)
 	}
 
