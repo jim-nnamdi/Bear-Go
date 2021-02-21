@@ -116,7 +116,7 @@ func edit(w http.ResponseWriter, r *http.Request) {
 func delete(w http.ResponseWriter, r *http.Request) {
 	db := dbConn()
 
-	postID := r.URL.Query().Get("ID")
+	postID := r.URL.Query().Get("id")
 	stmt, err := db.Prepare("DELETE FROM post WHERE id=?")
 	errorCheck(err)
 
