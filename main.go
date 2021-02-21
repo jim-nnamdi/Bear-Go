@@ -85,6 +85,7 @@ func show(w http.ResponseWriter, r *http.Request) {
 		emp.Description = description
 		emp.CreatedAt = createdAt
 	}
+
 	tmpl.ExecuteTemplate(w, "Show", emp)
 	defer db.Close()
 }
@@ -102,16 +103,16 @@ func edit(w http.ResponseWriter, r *http.Request) {
 
 	pst := Post{}
 	for result.Next() {
-		var ID int
-		var Name string
-		var Description string
+		var id int
+		var name, description, createdAt string
 
-		err := result.Scan(&ID, &Name, &Description)
+		err := result.Scan(&id, &name, &description, &createdAt)
 		errorCheck(err)
 
-		pst.ID = ID
-		pst.Name = Name
-		pst.Description = Description
+		pst.ID = id
+		pst.Name = name
+		pst.Description = description
+		pst.CreatedAt = createdAt
 	}
 
 	tmpl.ExecuteTemplate(w, "Edit", pst)

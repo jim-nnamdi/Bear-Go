@@ -1,12 +1,18 @@
 {{ define "Edit" }}
   {{ template "Header" }}
     {{ template "Menu" }} 
-   <h2>Edit Name and Description</h2>  
+      <div class="container">
+    <div class="row">
+    <div class="card-body p-3 shadow">
+   <h2>Edit Post</h2>  
     <form method="POST" action="update">
       <input type="hidden" name="uid" value="{{ .ID }}" />
-      <label> Name </label><input type="text" name="name" value="{{ .Name }}"  /><br />
-      <label> City </label><input type="text" name="description" value="{{ .Description }}"  /><br />
-      <input type="submit" class="btn btn-success value="Save post" />
+      <label> Name </label><input type="text" class="form-control" name="name" value="{{ .Name }}"  /><br />
+      <label> Description </label><textarea class="form-control" name="description">{{.Description}}</textarea>
+      <input type="submit" class="mt-2 btn btn-success value="Save post" />
     </form><br />    
+    </div>
+    </div>
+    </div>
   {{ template "Footer" }}
 {{ end }}
