@@ -1,33 +1,35 @@
 {{ define "Index" }}
-  {{ template "Header" }}
-    {{ template "Menu"  }}
-    <h2> Registered </h2>
+{{ template "Header" }}
+{{ template "Menu"  }}
+<div class="container">
 
-    <img src="/public/images/mac.png">
+<div class="row">
+{{ range . }}
+<div class="col-lg-4 col-sm-6 mb-4">
 
-    <table border="1">
-      <thead>
-      <tr>
-        <td>ID</td>
-        <td>Name</td>
-        <td>City</td>
-        <td>View</td>
-        <td>Edit</td>
-        <td>Delete</td>
-      </tr>
-       </thead>
-       <tbody>
-    {{ range . }}
-      <tr>
-        <td>{{ .ID }}</td>
-        <td> {{ .Name }} </td>
-        <td>{{ .Description }} </td> 
-        <td><a href="/show?id={{ .ID }}">View</a></td>
-        <td><a href="/edit?id={{ .ID }}">Edit</a></td>
-        <td><a href="/delete?id={{ .ID }}">Delete</a><td>
-      </tr>
-    {{ end }}
-       </tbody>
-    </table>
-  {{ template "Footer" }}
+<div class="card card-small card-post border-0 card-post--1 shadow">
+<img src="https://images.pexels.com/photos/3244513/pexels-photo-3244513.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" class="img-card img-fluid"/>
+<div class="card-body">
+<h5 class="card-title">
+<a href="/show?id={{ .ID }}">{{ .Name }}</a>
+</h5>
+<p class="card-text d-inline-block mb-3">{{.Description}}</p>
+<span class="text-muted">{{ .CreatedAt}}</span>
+</div>
+</div>
+</div>
+
+{{end}}
+</div>
+<!-- /.row -->
+
+<!-- Pagination -->
+
+</div>
+<!-- /.container -->
+
+{{ template "Footer" }}
 {{ end }}
+{{/* 
+<td><a href="/edit?id={{ .ID }}">Edit</a></td>
+<td><a href="/delete?id={{ .ID }}">Delete</a><td> */}}
