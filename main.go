@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"text/template"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -14,6 +15,7 @@ type Post struct {
 	ID          int
 	Name        string
 	Description string
+	CreatedAt   string
 }
 
 func errorCheck(err error) {
@@ -47,12 +49,14 @@ func index(w http.ResponseWriter, r *http.Request) {
 		var id int
 		var name string
 		var description string
+		var createdAt string
 
-		err = results.Scan(&id, &name, &description)
+		err = results.Scan(&id, &name, &description, &createdAt)
 		errorCheck(err)
 		pst.ID = id
 		pst.Name = name
 		pst.Description = description
+		pst.CreatedAt = createdAt
 
 		res = append(res, pst)
 
@@ -71,14 +75,15 @@ func show(w http.ResponseWriter, r *http.Request) {
 	emp := Post{}
 	for selDB.Next() {
 		var id int
-		var name, description string
-		err = selDB.Scan(&id, &name, &description)
+		var name, description, createdAt string
+		err = selDB.Scan(&id, &name, &description, &createdAt)
 		if err != nil {
 			panic(err.Error())
 		}
 		emp.ID = id
 		emp.Name = name
 		emp.Description = description
+		emp.CreatedAt = createdAt
 	}
 	tmpl.ExecuteTemplate(w, "Show", emp)
 	defer db.Close()
@@ -134,10 +139,10 @@ func insert(w http.ResponseWriter, r *http.Request) {
 		name := r.FormValue("name")
 		description := r.FormValue("description")
 
-		insform, err := db.Prepare("INSERT INTO post (name, description) VALUES(?,?)")
+		insform, err := db.Prepare("INSERT INTO post (name, description, createdAt) VALUES(?,?,?)")
 		errorCheck(err)
 
-		insform.Exec(name, description)
+		insform.Exec(name, description, time.Now())
 		log.Println("Resource Added" + name + " " + description)
 	}
 
