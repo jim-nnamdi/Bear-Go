@@ -1,8 +1,16 @@
 {{ define "Show" }}
   {{ template "Header" }}
     {{ template "Menu"  }}
-    <h2> ID {{ .ID }} </h2>
-      <p>Name: {{ .Name }}</p>
-      <p>City:  {{ .Description }}</p><br /> <a href="/edit?id={{ .ID }}">Edit</a></p>
+    <div class="container">
+    <div class="row">
+    <div class="card-body p-3 shadow">
+    {{/* <h2> ID {{ .ID }} </h2> */}}
+      <h2>{{ .Name }}</h2>
+      <p>{{ .Description }}</p>
+      <br/>
+       <a href="/edit?id={{ .ID }}">Edit</a></p>
+      </div>
+      </div>
+      </div>
   {{ template "Footer" }}
 {{ end }}

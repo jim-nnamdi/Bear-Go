@@ -9,7 +9,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-// Post struct
+// Post structure
 type Post struct {
 	ID          int
 	Name        string
