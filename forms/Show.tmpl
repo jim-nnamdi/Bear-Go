@@ -9,7 +9,11 @@
       <p>{{ .Description }}</p>
       <br/>
       Posted {{.CreatedAt}}
-       <a href="/edit?id={{ .ID }}">Edit</a></p>
+       <hr>
+       <div class="d-flex">
+       <a href="/edit?id={{ .ID }}" class="btn btn-primary">Edit</a>
+       <a href="/delete?id={{ .ID }}" class="ml-2 btn btn-danger">Delete</a>
+      </div>
       </div>
       </div>
       </div>
