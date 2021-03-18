@@ -181,7 +181,7 @@ func main() {
 
 	http.Handle("/public/", http.StripPrefix("/public/", http.FileServer(http.Dir("public"))))
 
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":9900", nil)
 }
 
 //reflex -r '\.go' -s -- sh -c "go run main.go"

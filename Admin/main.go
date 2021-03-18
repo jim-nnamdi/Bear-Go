@@ -1,46 +1,99 @@
-package main
+package main 
 
-import (
-	"database/sql"
-
-	_ "github.com/go-sql-driver"
-)
-
-// Post struct
-type Post struct {
-	ID          int
-	Name        string
-	Description string
-	CreatedAt   string
+// Admin structure
+type Admin struct{
+	ID int
+	Name string 
+	Designation string
 }
 
-func panicErrorCheck(err error) {
+func errorCheck(err error){
 	if err != nil {
 		panic(err.Error())
 	}
 }
 
-func databasePing(db *sql.DB) {
-	err := db.Ping()
-	panicErrorCheck(err)
+func dbPing(db *sql.DB){
+	db, err := db.Ping()
+	errorCheck(err)
 }
 
-func dbConn() (db *sql.DB) {
+func dbConnection()(db *sql.DB){
 	db, err := sql.Open("mysql", "root:root@tcp(localhost:8889)/gotest")
-	panicErrorCheck(err)
+	errorCheck(err)
 	return db
 }
 
-func checkTotalNumberOfPosts() {
-	db := dbConn()
+var admintmpl = template.Must(template.ParseGlob("adminforms/*"))
 
-	results, err := db.Query("SELECT COUNT(id) AS countPosts FROM posts")
-	panicErrorCheck(err)
+func retrieveAdmins(w http.ResponseWriter, r *http.Request){
+	db := dbConnection()
+	results,err := db.Query("SELECT * FROM admins")
+	errorCheck(err)
 
-	var countPosts int64
-	for results.Next() {
-		err := results.Scan(&countPosts)
-		panicErrorCheck(err)
+	adm := Admin{}
+	res := []Admin{}
+
+	for results.Next(){
+		var id int 
+		var name string 
+		var designation string 
+
+		err = results.Scan(&id, &name, &designation)
+		errorCheck(err)
+
+		admn.ID = id 
+		adm.Name = name 
+		adm.Designation = designation
+
+		res = append(res, adm)
 	}
-	return countPosts, nil
+	return res 
+	defer db.Close()
+}
+
+func retrieveSingleAdmin(w http.ResponseWriter, r *http.Request){
+	db := dbConnection()
+	adminId := r.URL.Query().Get("id")
+	result,err := db.Query("SELECT * FROM admins WHERE id=?", adminId)
+	errorCheck(err)
+
+	adm := Admin{}
+	for result.Next(){
+		var id int 
+		var name string 
+		var designation string 
+
+		err = result.Scan(&id, &name, &designation)
+		errorCheck(err)
+
+		adm.ID = id 
+		adm.Name = name 
+		adm.Designation = designation
+	}
+	return adm 
+	defer db.Close()
+}
+
+func editSingleAdminData(w http.ResponseWriter, r *http.Request){
+	db := dbConnection()
+	adminId := r.URL.Query().Get("id")
+	result,err := db.Query("SELECT * FROM admins WHERE id=?", adminId)
+	errorCheck(err)
+
+	adm := Admin{}
+	for result.Next(){
+		var id int 
+		var name string 
+		var designation string 
+
+		err = result.Scan(&id, &name, &designation)
+		errorCheck(err)
+
+		adm.ID = id 
+		adm.Name = name 
+		adm.Designation = designation
+	}
+	return adm 
+	defer db.Close()
 }
