@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"text/template"
 	"time"
-	"encoding/json"
+	// "encoding/json"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -62,8 +62,8 @@ func index(w http.ResponseWriter, r *http.Request) {
 		res = append(res, pst)
 
 	}
-	// tmpl.ExecuteTemplate(w, "Index", res)
-	json.NewEncoder(w).Encode(res)
+	tmpl.ExecuteTemplate(w, "Index", res)
+	// json.NewEncoder(w).Encode(res)
 	defer db.Close()
 }
 
@@ -88,8 +88,8 @@ func show(w http.ResponseWriter, r *http.Request) {
 		emp.CreatedAt = createdAt
 	}
 
-	// tmpl.ExecuteTemplate(w, "Show", emp)
- json.NewEncoder(w).Encode(emp)
+	tmpl.ExecuteTemplate(w, "Show", emp)
+//  json.NewEncoder(w).Encode(emp)
 	defer db.Close()
 }
 
@@ -118,8 +118,8 @@ func edit(w http.ResponseWriter, r *http.Request) {
 		pst.CreatedAt = createdAt
 	}
 
-	// tmpl.ExecuteTemplate(w, "Edit", pst)
-	json.NewEncoder(w).Encode(pst)
+	tmpl.ExecuteTemplate(w, "Edit", pst)
+	// json.NewEncoder(w).Encode(pst)
 	defer db.Close()
 }
 
@@ -174,7 +174,7 @@ func update(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	log.Println("server started at ")
+	log.Println("server started at localhost:8000 ")
 	http.HandleFunc("/", index)
 	http.HandleFunc("/show", show)
 	http.HandleFunc("/new", new)
